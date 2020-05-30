@@ -20,29 +20,26 @@ public class DeviceSupport : MonoBehaviour
         switch (obj.state)
         {
             case ARSessionState.CheckingAvailability:
+                Toaster.Instance.showToast("Checking Availability", 2);
                 break;
             case ARSessionState.NeedsInstall:
-                ShowSessionStateMessage();
+                Toaster.Instance.showToast("Needs Install",2);
                 break;
             case ARSessionState.Installing:
-                ShowSessionStateMessage();
+                Toaster.Instance.showToast("Installing",2);
                 break;
             case ARSessionState.Ready:
-                ShowSessionStateMessage();
+                Toaster.Instance.showToast("Ready",2);
                 break;
             case ARSessionState.SessionInitializing:
-                ShowSessionStateMessage();
+                Toaster.Instance.showToast("Initialiazing session", 2);
                 break;
             case ARSessionState.SessionTracking:
-                ShowSessionStateMessage();
+                Toaster.Instance.showToast("Tracking", 2);
                 break;
             case ARSessionState.Unsupported:
-                ShowSessionStateMessage();
+                Toaster.Instance.showToast("AR not supported",2);
                 break;
         }
-    }
-
-    private void ShowSessionStateMessage() {
-    
     }
 }
