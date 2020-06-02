@@ -13,7 +13,6 @@ public class ThumbnailLoader : MonoBehaviour
     [Tooltip("Panel to display the thumbnails")]
     private RectTransform assetsPanel;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -46,16 +45,19 @@ public class ThumbnailLoader : MonoBehaviour
             Toaster.Instance.showToast("Error fetching thumbnail : " + status.ToString(),2);
             return;
         }
+        
         Texture2D texture = asset.thumbnailTexture;
         GameObject thumbnailObject = new GameObject("thumbnail");
         thumbnailObject.transform.SetParent(assetsPanel);
         thumbnailObject.AddComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         thumbnailObject.GetComponent<RectTransform>().sizeDelta = new Vector2(texture.width,texture.height);
-        thumbnailObject.AddComponent<Button>().onClick.AddListener(() => onAssetThumbnailClicked(asset));
+        thumbnailObject.AddComponent<Button>().onClick.AddListener(() => OnAssetThumbnailClicked(asset));
     }
 
-    private void onAssetThumbnailClicked(PolyAsset asset) 
+    private void OnAssetThumbnailClicked(PolyAsset asset) 
     {
-        Toaster.Instance.showToast("Asset to import : " + asset.displayName.ToString(),2);
+        AssetLoader.ImportAsset(asset);   
     }
+
+    
 }
