@@ -18,11 +18,13 @@ public class AssetPlacer : MonoBehaviour
     [Tooltip("The AR Session Origin to get reference of ARRaycastManager")]
     private GameObject arSessionOrigin;
 
-    [SerializeField]
     private ARRaycastManager m_RaycastManager;
 
-    [SerializeField]
-    private GameObject loadedAsset;
+    public List<GameObject> loadedAsset;
+    //public List<GameObject> selectedAsset; //TODO : make selection of object transformable than just one object
+
+    public GameObject selectedAsset;
+    
     public static AssetPlacer Instance 
     {
         get 
@@ -69,8 +71,6 @@ public class AssetPlacer : MonoBehaviour
 
     public static void placeOnPlane(GameObject go) 
     {
-        Instance.loadedAsset = go;
-            
         if (!TryGetTouchPosition(out Vector2 touchPosition))
         {
             Debug.Log("out of here");
@@ -83,19 +83,18 @@ public class AssetPlacer : MonoBehaviour
             // will be the closest hit.
             Debug.Log(go.name);
             var hitPose = s_Hits[0].pose;
-            go.transform.position = hitPose.position;
-        }
-        else 
-        {
-            Debug.Log("No raycast");
+            go.transform.localPosition = hitPose.position;
         }
     }
 
     private void Update()
     {
-        if (Instance.loadedAsset != null) 
+        if (loadedAsset != null) 
         {
-            placeOnPlane(Instance.loadedAsset);
+            foreach (var asset in loadedAsset) 
+            {
+                placeOnPlane(asset);
+            }
         }
     }
 

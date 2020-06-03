@@ -42,7 +42,7 @@ public class AssetLoader : MonoBehaviour
     {
         PolyImportOptions options = PolyImportOptions.Default();
         options.rescalingMode = PolyImportOptions.RescalingMode.FIT;
-        options.desiredSize = 1.0f;
+        options.desiredSize = 0.2f;
         options.recenter = true;
 
         PolyApi.Import(asset, options, ImportAssetCallback);
@@ -58,6 +58,7 @@ public class AssetLoader : MonoBehaviour
         }
         GameObject importedAsset = result.Value.gameObject;
         importedAsset.transform.SetParent(GameObject.Find("Trackables").transform);
+        AssetPlacer.Instance.loadedAsset.Add(importedAsset);
         AssetPlacer.placeOnPlane(importedAsset);
     }
 

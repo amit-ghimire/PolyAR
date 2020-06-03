@@ -7,9 +7,6 @@ using System;
 
 public class DeviceSupport : MonoBehaviour
 {
-    [SerializeField]
-    ARSession m_session;
-
     private void OnEnable()
     {
         ARSession.stateChanged += onSessionStateChange;
