@@ -5,38 +5,52 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.SceneManagement;
 using System;
 
+/// <summary>
+/// Checks various state of AR Session
+/// Attemps install of AR software required in device or
+/// Reports unavailiability of AR in device
+/// </summary>
 public class DeviceSupport : MonoBehaviour
 {
+    #region Unity Callbacks
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     private void OnEnable()
     {
         ARSession.stateChanged += onSessionStateChange;
     }
+    #endregion
 
+    #region ARSession state change callback
     private void onSessionStateChange(ARSessionStateChangedEventArgs obj)
     {
         switch (obj.state)
         {
             case ARSessionState.CheckingAvailability:
-                Toaster.Instance.showToast("Checking Availability", 2);
+                Toaster.showToast("Checking Availability", 2);
                 break;
             case ARSessionState.NeedsInstall:
-                Toaster.Instance.showToast("Needs Install",2);
+                Toaster.showToast("Needs Install",2);
                 break;
             case ARSessionState.Installing:
-                Toaster.Instance.showToast("Installing",2);
+                Toaster.showToast("Installing",2);
                 break;
             case ARSessionState.Ready:
-                Toaster.Instance.showToast("Ready",2);
+                Toaster.showToast("Ready",2);
                 break;
             case ARSessionState.SessionInitializing:
-                Toaster.Instance.showToast("Initialiazing session", 2);
+                Toaster.showToast("Initialiazing session", 2);
                 break;
             case ARSessionState.SessionTracking:
-                Toaster.Instance.showToast("Tracking", 2);
+                Toaster.showToast("Tracking", 2);
                 break;
             case ARSessionState.Unsupported:
-                Toaster.Instance.showToast("AR not supported",2);
+                Toaster.showToast("AR not supported",2);
                 break;
         }
     }
+    #endregion
 }

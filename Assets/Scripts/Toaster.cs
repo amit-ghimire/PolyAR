@@ -5,11 +5,14 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Utility Class for showing android toast-like messages 
+/// Used for debug messages and state informations
+/// </summary>
 public class Toaster : MonoBehaviour
-{
-    public Text txt;
-    public static Toaster _instance;
-    
+{ 
+    #region Singleton
+    private static Toaster _instance;
     public static Toaster Instance
     {
         get 
@@ -17,7 +20,13 @@ public class Toaster : MonoBehaviour
             return _instance;
         }
     }
+    #endregion
 
+    #region Public Variables
+    public Text txt;
+    #endregion
+
+    #region Unity Callbacks
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -29,13 +38,28 @@ public class Toaster : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
     }
+    #endregion
 
-    public void showToast(string text,int duration) 
+    #region Public Methods
+    /// <summary>
+    /// Utility Function to show toast
+    /// </summary>
+    /// <param name="text">The message string</param>
+    /// <param name="duration">Duration to show the message in screen</param>
+    public static void showToast(string text,int duration) 
     {
-        Instance.StartCoroutine(showToastCoroutine(text,duration));
+        Instance.StartCoroutine(Instance.showToastCoroutine(text,duration));
     }
+    #endregion
 
-    private IEnumerator showToastCoroutine(string text, int duration) 
+    #region Private Coroutines
+    /// <summary>
+    /// Coroutine to display text message
+    /// </summary>
+    /// <param name="text">The message to display</param>
+    /// <param name="duration">Duration to show the text</param>
+    /// <returns></returns>
+    IEnumerator showToastCoroutine(string text, int duration) 
     {
         Color originalColor = txt.color;
         txt.text = text;
@@ -56,8 +80,16 @@ public class Toaster : MonoBehaviour
         txt.color = originalColor;
     }
 
+    /// <summary>
+    /// Coroutine to fade in and out the text
+    /// </summary>
+    /// <param name="targetText">Text to display</param>
+    /// <param name="fadeIn">Fade In or Fade out</param>
+    /// <param name="duration">Fade in for duration and fade out</param>
+    /// <returns></returns>
     IEnumerator fadeInAndOut(Text targetText, bool fadeIn, float duration) 
     {
+        // Alpha values for text display used to fade in or out
         float a , b;
         if (fadeIn) 
         {
@@ -81,4 +113,5 @@ public class Toaster : MonoBehaviour
             yield return null;
         }
     }
+    #endregion
 }

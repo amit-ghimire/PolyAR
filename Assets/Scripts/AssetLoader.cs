@@ -11,12 +11,9 @@ using UnityEngine.XR.ARFoundation;
 /// </summary>
 public class AssetLoader : MonoBehaviour
 {
-    public static AssetLoader _instance;
+    #region Singleton
+    private static AssetLoader _instance;
     
-    [SerializeField]
-    [Tooltip("The Scroll Panel")]
-    private GameObject scrollPanel;
-
     public static AssetLoader Instance 
     {
         get 
@@ -24,7 +21,15 @@ public class AssetLoader : MonoBehaviour
             return _instance;
         }
     }
+    #endregion
 
+    #region Private Variables
+    [SerializeField]
+    [Tooltip("The Scroll Panel")]
+    private GameObject scrollPanel;
+    #endregion
+
+    #region Unity Callbacks
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -37,7 +42,13 @@ public class AssetLoader : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
     }
+    #endregion
 
+    #region Public Methods
+    /// <summary>
+    /// Import asset from clicked thumbnail button
+    /// </summary>
+    /// <param name="asset">The asset to be imported</param>
     public static void ImportAsset(PolyAsset asset)
     {
         PolyImportOptions options = PolyImportOptions.Default();
@@ -48,18 +59,23 @@ public class AssetLoader : MonoBehaviour
         PolyApi.Import(asset, options, ImportAssetCallback);
         Instance.scrollPanel.SetActive(false);
     }
+    #endregion
 
+    #region Poly Toolkit Callbacks
+    /// <summary>
+    /// Called after asset is imported to the scene
+    /// </summary>
+    /// <param name="asset">The asset imported to the scene</param>
+    /// <param name="result">result of the import request => gameobject / error</param>
     private static void ImportAssetCallback(PolyAsset asset, PolyStatusOr<PolyImportResult> result)
     {
         if (!result.Ok)
         {
-            Toaster.Instance.showToast("Failed to import asset. Reason: " + result.Status, 2);
+            Toaster.showToast("Failed to import asset. Reason: " + result.Status, 2);
             return;
         }
         GameObject importedAsset = result.Value.gameObject;
-        importedAsset.transform.SetParent(GameObject.Find("Trackables").transform);
-        AssetPlacer.Instance.loadedAsset.Add(importedAsset);
-        AssetPlacer.placeOnPlane(importedAsset);
+        AssetPlacer.setupAsset(importedAsset);    
     }
-
+    #endregion
 }
