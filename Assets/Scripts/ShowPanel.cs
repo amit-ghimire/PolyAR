@@ -14,7 +14,7 @@ public class ShowPanel : MonoBehaviour
     
     //The Panel
     [SerializeField]
-    private GameObject scrollPanel;
+    private GameObject scrollPanel, loadingPanel;
 
     //Is showing ?
     private bool isActive;
@@ -32,9 +32,10 @@ public class ShowPanel : MonoBehaviour
     #region Button Click Listener
     void OnButtonPressed() 
     {
-        scrollPanel.SetActive(!isActive);
-        scrollPanel.GetComponent<ThumbnailLoader>().LoadThumbnails();
         isActive = !isActive;
+        loadingPanel.SetActive(isActive);
+        scrollPanel.SetActive(isActive);
+        scrollPanel.GetComponent<ThumbnailLoader>().LoadThumbnails();
     }
     #endregion
 }

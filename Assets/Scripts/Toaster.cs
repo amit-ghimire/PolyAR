@@ -23,6 +23,7 @@ public class Toaster : MonoBehaviour
     #endregion
 
     #region Public Variables
+    public GameObject toast;
     public Text txt;
     #endregion
 
@@ -61,7 +62,8 @@ public class Toaster : MonoBehaviour
     /// <returns></returns>
     IEnumerator showToastCoroutine(string text, int duration) 
     {
-        Color originalColor = txt.color;
+        txt.color = Color.black;
+        toast.SetActive(true);
         txt.text = text;
         txt.enabled = true;
 
@@ -77,7 +79,7 @@ public class Toaster : MonoBehaviour
         yield return fadeInAndOut(txt, false, 0.5f);
 
         txt.enabled = false;
-        txt.color = originalColor;
+        toast.SetActive(false);
     }
 
     /// <summary>

@@ -18,10 +18,13 @@ public class ThumbnailLoader : MonoBehaviour
     private RectTransform assetsPanel;
     #endregion
 
+    public GameObject loadingPanel;
+
     #region Unity Callbacks
     void Start()
     {
         Application.runInBackground = true;
+        assetsPanel.gameObject.SetActive(false);
     }
     #endregion
 
@@ -43,6 +46,7 @@ public class ThumbnailLoader : MonoBehaviour
     /// <param name="result">result of the request to list poly toolkit asset</param>
     private void ListAssetCallback(PolyStatusOr<PolyListAssetsResult> result)
     {
+        loadingPanel.SetActive(false);
         if (!result.Ok)
         {
             Toaster.showToast("Failed to load asset : " + result.Status,2);
@@ -53,6 +57,7 @@ public class ThumbnailLoader : MonoBehaviour
             // Fetch thumbnails for assets listed by the request
             PolyApi.FetchThumbnail(result.Value.assets[i], FetchThumbnailCallback);
         }
+        assetsPanel.gameObject.SetActive(true);
     }
 
     /// <summary>

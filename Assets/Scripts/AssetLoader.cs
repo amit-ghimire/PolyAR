@@ -29,6 +29,8 @@ public class AssetLoader : MonoBehaviour
     private GameObject scrollPanel;
     #endregion
 
+    public GameObject loadingPanel;
+
     #region Unity Callbacks
     private void Awake()
     {
@@ -52,12 +54,13 @@ public class AssetLoader : MonoBehaviour
     public static void ImportAsset(PolyAsset asset)
     {
         PolyImportOptions options = PolyImportOptions.Default();
-        options.rescalingMode = PolyImportOptions.RescalingMode.FIT;
+        options.rescalingMode = PolyImportOptions.RescalingMode.CONVERT;
         options.desiredSize = 0.2f;
         options.recenter = true;
 
         PolyApi.Import(asset, options, ImportAssetCallback);
         Instance.scrollPanel.SetActive(false);
+        Instance.loadingPanel.SetActive(true);
     }
     #endregion
 
@@ -75,7 +78,8 @@ public class AssetLoader : MonoBehaviour
             return;
         }
         GameObject importedAsset = result.Value.gameObject;
-        AssetPlacer.setupAsset(importedAsset);    
+        AssetPlacer.setupAsset(importedAsset);
+        Instance.loadingPanel.SetActive(false);
     }
     #endregion
 }
